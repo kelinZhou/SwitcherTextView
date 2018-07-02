@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="VerticalSwitcherTextView">
+        <attr name="android:text" />
+        <attr name="android:textColor" />
+        <attr name="android:textSize" />
+        <attr name="android:gravity" />
+        <!--每次滚动的间隔时间-->
+        <attr name="intervalDuration" format="integer" />
+    </declare-styleable>
+</resources>
