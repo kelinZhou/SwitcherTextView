@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -59,9 +60,11 @@ public class VerticalSwitcherTextView extends TextSwitcher implements ViewSwitch
 
     @Override
     public void setText(CharSequence text) {
-        curText = text.toString();
+        curText = text == null ? null : text.toString();
         lineText.clear();
-        if (measureText(text.toString()) < realWidth) {
+        if (TextUtils.isEmpty(curText)) {
+            callSuperSetText(null);
+        } else if (measureText(text.toString()) < realWidth) {
             needMeasureText = false;
             callSuperSetText(text.toString());
         } else if (realWidth == 0) {
