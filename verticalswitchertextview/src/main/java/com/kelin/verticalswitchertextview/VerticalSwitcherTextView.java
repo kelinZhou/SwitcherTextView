@@ -26,7 +26,7 @@ public class VerticalSwitcherTextView extends TextSwitcher implements ViewSwitch
     private float textSize;
     private int textColor;
     private int realWidth;
-    private int curIndex = -1;
+    private int curIndex;
     private boolean needMeasureText;
     private final Handler HANDLER = new Handler();
     private Runnable changeTextRunnable = new Runnable() {
