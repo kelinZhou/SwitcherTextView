@@ -14,7 +14,7 @@
         android:gravity="center_vertical"
         android:inAnimation="@anim/anim_down_in"
         android:outAnimation="@anim/anim_up_out"
-        android:text="这是一条很长很长的文字不知道能不能在一行之内放得下。如果放不下则另起一行显示！然后在测试一条很长很长的文字看看还能不能放的下，这回估计应该不放不下了吧！"
+        android:text="这是一条很长很长的！"
         android:textColor="#d33d33" />
 
 </LinearLayout>

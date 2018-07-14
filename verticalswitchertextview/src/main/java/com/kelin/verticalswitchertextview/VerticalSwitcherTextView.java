@@ -64,9 +64,11 @@ public class VerticalSwitcherTextView extends TextSwitcher implements ViewSwitch
         lineText.clear();
         if (TextUtils.isEmpty(curText)) {
             callSuperSetText(null);
+            HANDLER.removeCallbacks(changeTextRunnable);
         } else if (measureText(text.toString()) < realWidth) {
             needMeasureText = false;
             callSuperSetText(text.toString());
+            HANDLER.removeCallbacks(changeTextRunnable);
         } else if (realWidth == 0) {
             needMeasureText = true;
         } else {
@@ -86,9 +88,13 @@ public class VerticalSwitcherTextView extends TextSwitcher implements ViewSwitch
             lineText.add(text);
             String nextLineText = curText.substring(text.length(), curText.length());
             if (measureText(nextLineText) < realWidth) {
-                lineText.add(nextLineText);
+                if (!TextUtils.isEmpty(nextLineText)) {
+                    lineText.add(nextLineText);
+                }
                 callSuperSetText(lineText.get(0));
-                HANDLER.postDelayed(changeTextRunnable, intervalDuration);
+                if (lineText.size() > 1) {
+                    HANDLER.postDelayed(changeTextRunnable, intervalDuration);
+                }
             } else {
                 curText = nextLineText;
                 onMeasureText(width, nextLineText);
