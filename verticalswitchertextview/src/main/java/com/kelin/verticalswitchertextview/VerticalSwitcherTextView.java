@@ -65,15 +65,15 @@ public class VerticalSwitcherTextView extends TextSwitcher implements ViewSwitch
         if (TextUtils.isEmpty(curText)) {
             callSuperSetText(null);
             HANDLER.removeCallbacks(changeTextRunnable);
-        } else if (measureText(text.toString()) < realWidth) {
+        } else if (!curText.contains("\n") && measureText(curText) < realWidth) {
             needMeasureText = false;
-            callSuperSetText(text.toString());
+            callSuperSetText(curText);
             HANDLER.removeCallbacks(changeTextRunnable);
         } else if (realWidth == 0) {
             needMeasureText = true;
         } else {
             needMeasureText = false;
-            onMeasureText(realWidth, text.toString());
+            onMeasureText(realWidth, curText);
         }
     }
 
@@ -85,8 +85,15 @@ public class VerticalSwitcherTextView extends TextSwitcher implements ViewSwitch
         if (measureText(text) > width) {
             onMeasureText(width, text.substring(0, text.length() - 1));
         } else {
-            lineText.add(text);
-            String nextLineText = curText.substring(text.length(), curText.length());
+            String nextLineText;
+            int indexOf = text.indexOf("\n");
+            if (indexOf > 0) {
+                lineText.add(text.substring(0, indexOf));
+                nextLineText = curText.substring(indexOf + 1, curText.length());
+            } else {
+                lineText.add(text);
+                nextLineText = curText.substring(text.length(), curText.length());
+            }
             if (measureText(nextLineText) < realWidth) {
                 if (!TextUtils.isEmpty(nextLineText)) {
                     lineText.add(nextLineText);
@@ -103,7 +110,7 @@ public class VerticalSwitcherTextView extends TextSwitcher implements ViewSwitch
     }
 
     private float measureText(String text) {
-        return ((TextView) getCurrentView()).getPaint().measureText(text);
+        return ((TextView) getCurrentView()).getPaint().measureText(text.replace("\n", ""));
     }
 
     @Override

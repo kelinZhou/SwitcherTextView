@@ -14,7 +14,7 @@
         android:gravity="center_vertical"
         android:inAnimation="@anim/anim_down_in"
         android:outAnimation="@anim/anim_up_out"
-        android:text="这是一条很长很长的！"
+        android:text="先去找一首歌，不要是关于爱情的！\n不然会被老师拍死了！\n再看看这首歌的MV，联系MV的情景，自己围绕着MV写。\n能怎么扯就怎么扯！\n最好励志点的歌，这样好写！\n我推荐不了你什么歌，听的都是关于爱情的，励志歌你可以去问问你爸妈，她们可能知道一些。\n关于情感的歌，如果你想要你可以再追问！"
         android:textColor="#d33d33" />
 
 </LinearLayout>
