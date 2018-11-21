@@ -22,6 +22,7 @@ import java.util.ArrayList;
  */
 public class VerticalSwitcherTextView extends TextSwitcher implements ViewSwitcher.ViewFactory {
 
+    private CharSequence text;
     private String curText;
     private ArrayList<String> lineText = new ArrayList<>(2);
     private float textSize;
@@ -60,6 +61,7 @@ public class VerticalSwitcherTextView extends TextSwitcher implements ViewSwitch
 
     @Override
     public void setText(CharSequence text) {
+        this.text = text;
         curText = text == null ? null : text.toString();
         lineText.clear();
         if (TextUtils.isEmpty(curText)) {
@@ -75,6 +77,10 @@ public class VerticalSwitcherTextView extends TextSwitcher implements ViewSwitch
             needMeasureText = false;
             onMeasureText(realWidth, curText);
         }
+    }
+
+    public CharSequence getText() {
+        return text;
     }
 
     /**
