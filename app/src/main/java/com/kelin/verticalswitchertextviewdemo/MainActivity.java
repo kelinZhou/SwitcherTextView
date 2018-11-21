@@ -2,6 +2,10 @@ package com.kelin.verticalswitchertextviewdemo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Toast;
+
+import com.kelin.verticalswitchertextview.VerticalSwitcherTextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -9,6 +13,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final VerticalSwitcherTextView vstHint = findViewById(R.id.vstHint);
+        vstHint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), vstHint.getLineNumber() + "行", Toast.LENGTH_SHORT).show();
+            }
+        });
 //        final TextView tvText = findViewById(R.id.tvText);
 //        tvText.post(new Runnable() {
 //            @Override

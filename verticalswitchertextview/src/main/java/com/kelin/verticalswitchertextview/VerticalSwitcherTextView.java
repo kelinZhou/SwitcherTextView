@@ -77,6 +77,14 @@ public class VerticalSwitcherTextView extends TextSwitcher implements ViewSwitch
         }
     }
 
+    /**
+     * 获取行数。
+     * @return 返回当前text的行数。
+     */
+    public int getLineNumber() {
+        return lineText.size();
+    }
+
     private void callSuperSetText(String text) {
         super.setText(text);
     }
