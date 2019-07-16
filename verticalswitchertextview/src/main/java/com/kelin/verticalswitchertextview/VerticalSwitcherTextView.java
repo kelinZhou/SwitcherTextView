@@ -1,5 +1,6 @@
 package com.kelin.verticalswitchertextview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -30,14 +31,7 @@ public class VerticalSwitcherTextView extends TextSwitcher implements ViewSwitch
     private int realWidth;
     private int curIndex;
     private boolean needMeasureText;
-    private final Handler HANDLER = new Handler();
-    private Runnable changeTextRunnable = new Runnable() {
-        @Override
-        public void run() {
-            callSuperSetText(lineText.get(++curIndex % lineText.size()));
-            HANDLER.postDelayed(changeTextRunnable, intervalDuration);
-        }
-    };
+    private final SwitcherHandler HANDLER = new SwitcherHandler();
     private int gravity;
     private int intervalDuration;
 
@@ -47,13 +41,13 @@ public class VerticalSwitcherTextView extends TextSwitcher implements ViewSwitch
 
     public VerticalSwitcherTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.VerticalSwitcherTextView);
-        intervalDuration = a.getInteger(R.styleable.VerticalSwitcherTextView_intervalDuration, 2000);
+        TypedArray a = context.obtainStyledAttributes(attrs, com.kelin.verticalswitchertextview.R.styleable.VerticalSwitcherTextView);
+        intervalDuration = a.getInteger(com.kelin.verticalswitchertextview.R.styleable.VerticalSwitcherTextView_intervalDuration, 2000);
         final float fontScale = getContext().getResources().getDisplayMetrics().scaledDensity;
-        textSize = a.getDimensionPixelSize(R.styleable.VerticalSwitcherTextView_android_textSize, (int) (0x0e * fontScale + 0.5f));
-        textColor = a.getColor(R.styleable.VerticalSwitcherTextView_android_textColor, Color.BLACK);
-        CharSequence text = a.getText(R.styleable.VerticalSwitcherTextView_android_text);
-        gravity = a.getInteger(R.styleable.VerticalSwitcherTextView_android_gravity, Gravity.NO_GRAVITY);
+        textSize = a.getDimensionPixelSize(com.kelin.verticalswitchertextview.R.styleable.VerticalSwitcherTextView_android_textSize, (int) (0x0e * fontScale + 0.5f));
+        textColor = a.getColor(com.kelin.verticalswitchertextview.R.styleable.VerticalSwitcherTextView_android_textColor, Color.BLACK);
+        CharSequence text = a.getText(com.kelin.verticalswitchertextview.R.styleable.VerticalSwitcherTextView_android_text);
+        gravity = a.getInteger(com.kelin.verticalswitchertextview.R.styleable.VerticalSwitcherTextView_android_gravity, Gravity.NO_GRAVITY);
         a.recycle();
         setFactory(this);
         setText(text);
@@ -66,11 +60,11 @@ public class VerticalSwitcherTextView extends TextSwitcher implements ViewSwitch
         lineText.clear();
         if (TextUtils.isEmpty(curText)) {
             callSuperSetText(null);
-            HANDLER.removeCallbacks(changeTextRunnable);
+            HANDLER.stop();
         } else if (!curText.contains("\n") && measureText(curText) < realWidth) {
             needMeasureText = false;
             callSuperSetText(curText);
-            HANDLER.removeCallbacks(changeTextRunnable);
+            HANDLER.stop();
         } else if (realWidth == 0) {
             needMeasureText = true;
         } else {
@@ -114,7 +108,7 @@ public class VerticalSwitcherTextView extends TextSwitcher implements ViewSwitch
                 }
                 callSuperSetText(lineText.get(0));
                 if (lineText.size() > 1) {
-                    HANDLER.postDelayed(changeTextRunnable, intervalDuration);
+                    HANDLER.start();
                 }
             } else {
                 curText = nextLineText;
@@ -156,5 +150,41 @@ public class VerticalSwitcherTextView extends TextSwitcher implements ViewSwitch
         t.setTextColor(textColor);
         t.getPaint().setTextSize(textSize);
         return t;
+    }
+
+    @SuppressLint("HandlerLeak")
+    private class SwitcherHandler extends Handler {
+        private SwitcherRunnable curRunnable;
+        void start() {
+            if (curRunnable != null) {
+                removeCallbacks(curRunnable.stop(), null);
+            }
+            curRunnable = new SwitcherRunnable();
+            postDelayed(curRunnable, intervalDuration);
+        }
+
+        void stop() {
+            if (curRunnable != null) {
+                removeCallbacks(curRunnable.stop(), null);
+            }
+        }
+    }
+
+    private class SwitcherRunnable implements Runnable {
+
+        private boolean isFinish = false;
+
+        @Override
+        public void run() {
+            if (!isFinish) {
+                callSuperSetText(lineText.get(++curIndex % lineText.size()));
+                HANDLER.start();
+            }
+        }
+
+        Runnable stop() {
+            isFinish = true;
+            return this;
+        }
     }
 }
