@@ -1,3 +1,3 @@
-# VerticalSwitcherTextView
+# SwitcherTextView
 ## 效果图
-![VerticalSwitcherTextView](materials/gif_VerticalSwitcherTextView.gif)
+![SwitcherTextView](materials/gif_VerticalSwitcherTextView.gif)
