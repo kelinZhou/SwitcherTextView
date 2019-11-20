@@ -1,4 +1,4 @@
-package com.kelin.verticalswitchertextview;
+package com.kelin.switchertextviewdemo;
 
 import org.junit.Test;
 

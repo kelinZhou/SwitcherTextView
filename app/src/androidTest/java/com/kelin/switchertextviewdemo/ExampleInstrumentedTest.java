@@ -1,4 +1,4 @@
-package com.kelin.verticalswitchertextviewdemo;
+package com.kelin.switchertextviewdemo;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
